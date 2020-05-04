@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app"></div>
+<script src="js/react.development.js"></script>
+<script src="js/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+<script type="text/html">
+    let arr = [
+    {name:1},
+    {name:2},
+    {name:3},
+    {name:4},
+    ];
+    const vDom = (
+    <ul>
+        {
+        arr.map((item , index) =>
+        <li key={index}>{item.name}</li>
+        )
+        }
+    </ul>
+    );
+    ReactDOM.render(vDom, document.getElementById('app'))
+</script>
+<!--<script type="text/html">-->
+<!--    class SingleDog extends React.Component {-->
+<!--    constructor(props) {-->
+<!--    super(props);-->
+<!--    this.state = {-->
+<!--    age:1,-->
+<!--    friendDog:[]-->
+<!--    }-->
+<!--    }-->
+<!--    static defaultProps = {-->
+<!--    name: '阿三',-->
+<!--    grander: '公'-->
+<!--    };-->
+<!--    render(){-->
+<!--    const dd = this.state.friendDog-->
+<!--    console.log(dd);-->
+<!--    return (-->
+<!--    <div>-->
+<!--        <p>我是{this.props.name}</p>-->
+<!--        <p>我是{this.props.grander}的</p>-->
+<!--        <p>我今年{this.state.age}岁</p>-->
+<!--        <p>我的好基友是{-->
+<!--            dd.map((item , index) => (-->
+<!--        <li key={index}>{item}</li>-->
+<!--        ))-->
+<!--        }</p>-->
+<!--        <button onClick={()-->
+<!--        => this.addBtn()}>1111</button>-->
+<!--    </div>-->
+<!--    )-->
+<!--    }-->
+<!--    addBtn(){-->
+<!--    const dd = this.state.friendDog;-->
+<!--    dd.push('狗友' + this.state.age);-->
+<!--    console.log(dd);-->
+<!--    this.setState({-->
+<!--    age:this.state.age+1,-->
+<!--    friendDog: dd-->
+<!--    })-->
+
+
+<!--    }-->
+
+<!--    }-->
+<!--    ReactDOM.render(-->
+<!--    <SingleDog/>,-->
+<!--    document.getElementById('app')-->
+<!--    )-->
+<!--</script>-->
+<script type="text/babel">
+  class App extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        listArr: [
+          {name: '张三', age: 1},
+          {name: '李四', age: 2},
+          {name: '王五', age: 4},
+        ]
+      };
+      this.deleteList = this.deleteList.bind(this);
+      this.addList = this.addList.bind(this);
+    }
+
+    render() {
+      return (
+        <div>
+          <FormInput addList={this.addList}/>
+          <TableList deleteList={this.deleteList} listArr={this.state.listArr}/>
+        </div>
+      )
+    }
+
+    addList(val) {
+      const {listArr} = this.state;
+      listArr.push(val);
+      this.setState({
+        listArr
+      })
+    }
+
+    deleteList(index) {
+      const {listArr} = this.state
+      listArr.splice(index, 1);
+      this.setState({
+        listArr
+      })
+
+    }
+
+  }
+
+  class FormInput extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        name: '',
+        age: ''
+      }
+    }
+
+    render() {
+      console.log(this.props);
+      return (
+        <div>
+          <input onChange={(e) => this.nameChange(e)} type="text" placeholder="姓名"/>
+          <input onChange={(e) => this.ageChange(e)} type="text" placeholder="年龄"/>
+          <button onClick={() => this.props.addList(this.getVal())}>ddddd</button>
+        </div>
+      )
+    }
+
+    getVal() {
+      return {name: this.state.name, age: this.state.age}
+    }
+
+    nameChange(event) {
+      const name = event.target.value;
+      this.setState({
+        name
+      })
+    }
+
+    ageChange(event) {
+      const age = event.target.value
+      this.setState({
+        age
+      })
+
+    }
+  }
+
+  class TableList extends React.Component {
+
+    render() {
+      console.log(this.props.listArr);
+      const liListArr = this.props.listArr.map((item, index) => {
+        return <li key={index}>姓名：{item.name} , 年龄:{item.age}
+          <button onClick={() => this.props.deleteList(index)}>cc</button>
+        </li>
+      });
+      return (
+        <div>
+          {liListArr}
+        </div>
+
+      )
+    }
+  }
+
+  ReactDOM.render(<App/>, document.getElementById('app'))
+</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #modal {
+            height: 200px;
+            width: 200px;
+            line-height: 200px;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid black;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="open">开启</button>
+    <button id="close">关闭</button>
+    <script>
+        class Modal {
+            constructor() {
+                this.dom = null
+                if (!Modal.instance) {
+                    this.dom = document.createElement("div")
+                    this.dom.innerHTML = "我是modal"
+                    this.dom.style.display = "none"
+                    this.dom.id = 'modal'
+                    document.body.appendChild(this.dom)
+                    this.dom.showModal = this.show.bind(this)
+                    this.dom.hideModal = this.hide.bind(this)
+                    Modal.instance = this.dom
+                }
+                return Modal.instance
+            }
+            show() {
+                this.dom.style.display = "block"
+            }
+            hide() {
+                this.dom.style.display = "none"
+            }
+        }
+        document.getElementById('open').addEventListener('click', function () {
+            // 未点击则不创建modal实例，避免不必要的内存占用;此处不用 new Modal 的形式调用也可以，和 Storage 同理
+            const modal = new Modal()
+            modal.showModal()
+        })
+
+        document.getElementById('close').addEventListener('click', function () {
+            // 未点击则不创建modal实例，避免不必要的内存占用;此处不用 new Modal 的形式调用也可以，和 Storage 同理
+            const modal = new Modal()
+            modal.hideModal()
+        })
+    </script>
+</body>
+
+</html>
